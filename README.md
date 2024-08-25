@@ -43,4 +43,4 @@ All project documents are in the [Project Wiki](https://github.com/KikyoBRV/ku-p
 * [Project Plan](https://github.com/KikyoBRV/ku-polls/wiki/Project-Plan)
 
 ## Iteration Plans
-* [Iteration 1 Plan](https://github.com/KikyoBRV/ku-polls/wiki/Iteration-1-Plan)
+* [Iteration 1 Plan](https://github.com/KikyoBRV/ku-polls/wiki/Iteration-1-Plan) and [Project Board Iteration 1](https://github.com/users/KikyoBRV/projects/1)
