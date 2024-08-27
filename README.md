@@ -37,7 +37,7 @@ TBA
 | admin    | iloveisp |
 
 ## Project Documentation
-All project documents are in the [Project Wiki](.../.../wiki).
+All project documents are in the [Project Wiki](https://github.com/KikyoBRV/ku-polls/wiki).
 * [Vision and Scope](https://github.com/KikyoBRV/ku-polls/wiki/Vision-and-Scope)
 * [Requirements](https://github.com/KikyoBRV/ku-polls/wiki/Requirements)
 * [Project Plan](https://github.com/KikyoBRV/ku-polls/wiki/Project-Plan)
