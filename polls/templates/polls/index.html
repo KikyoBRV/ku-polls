@@ -1,29 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Polls</title>
+    <!-- Load the static files -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <title>KU Polls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .polls-list {
+            margin-bottom: 30px;
+        }
+        .poll-item {
+            margin-bottom: 10px;
+        }
+        .view-results {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .view-results:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="container">
+        <h1>KU Polls</h1>
 
-    {% if latest_question_list %}
-        <ul>
+        {% if latest_question_list %}
+            <ul class="polls-list">
             {% for question in latest_question_list %}
-                <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+                <li class="poll-item">
+                    <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
+                    <a class="view-results" href="{% url 'polls:results' question.id %}">View Results</a>
+                </li>
             {% endfor %}
-        </ul>
-    {% else %}
-        <p>No polls are available.</p>
-    {% endif %}
+            </ul>
+        {% else %}
+            <p>No polls are available.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
 
