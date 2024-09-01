@@ -1,3 +1,22 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    &lt;!&ndash; Load the static files &ndash;&gt;-->
+<!--    {% load static %}-->
+<!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
+<!--    <title>Results for {{ question.question_text }}</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <a href="{% url 'polls:index' %}">Back to List of Polls</a>-->
+<!--    <h1>{{ question.question_text }}</h1>-->
+
+<!--    <ul>-->
+<!--        {% for choice in question.choice_set.all %}-->
+<!--            <li>{{ choice.choice_text }} &#45;&#45; {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +26,9 @@
     <title>Results for {{ question.question_text }}</title>
 </head>
 <body>
+    <div class="navigation">
+        <a href="{% url 'polls:index' %}" class="back-link">← Back to List of Polls</a>
+    </div>
     <h1>{{ question.question_text }}</h1>
 
     <ul>
@@ -14,7 +36,5 @@
             <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
         {% endfor %}
     </ul>
-
-    <a href="{% url 'polls:detail' question.id %}">Vote again?</a>
 </body>
 </html>

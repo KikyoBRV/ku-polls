@@ -1,3 +1,31 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    &lt;!&ndash; Load the static files &ndash;&gt;-->
+<!--    {% load static %}-->
+<!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
+<!--    <title>{{ question.question_text }}</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <a href="{% url 'polls:index' %}">Back to List of Polls</a>-->
+<!--    <form action="{% url 'polls:vote' question.id %}" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <fieldset>-->
+<!--            <legend>-->
+<!--                <h1>{{ question.question_text }}</h1>-->
+<!--            </legend>-->
+<!--            {% if error_message %}-->
+<!--                <p><strong>{{ error_message }}</strong></p>-->
+<!--            {% endif %}-->
+<!--            {% for choice in question.choice_set.all %}-->
+<!--                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">-->
+<!--                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>-->
+<!--            {% endfor %}-->
+<!--        </fieldset>-->
+<!--        <input type="submit" value="Vote">-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +35,9 @@
     <title>{{ question.question_text }}</title>
 </head>
 <body>
+    <div class="navigation">
+        <a href="{% url 'polls:index' %}" class="back-link">← Back to List of Polls</a>
+    </div>
     <form action="{% url 'polls:vote' question.id %}" method="post">
         {% csrf_token %}
         <fieldset>
@@ -25,3 +56,4 @@
     </form>
 </body>
 </html>
+
