@@ -51,7 +51,7 @@
             {% for question in latest_question_list %}
                 <li class="poll-item">
                     <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-                    <a class="view-results" href="{% url 'polls:results' question.id %}">View Results</a>
+                    <a class="view-results" href="{% url 'polls:results' question.id %}">Results</a>
                 </li>
             {% endfor %}
             </ul>
