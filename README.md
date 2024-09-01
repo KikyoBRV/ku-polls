@@ -1,5 +1,3 @@
-[![Django CI](https://github.com/colarrbear/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/KikyoBRV/ku-polls/actions/workflows/django.yml)
-
 # ku-polls
 The project will produce a web application for conducting polls and surveys that satisfies the requirements as specified in [Requirements](https://github.com/KikyoBRV/ku-polls/wiki/Requirements). The application will be written in Python and runnable on Windows, Linux, or MacOS hosts containing the required software.
 
@@ -39,10 +37,10 @@ TBA
 | admin    | iloveisp |
 
 ## Project Documentation
-All project documents are in the [Project Wiki](https://github.com/KikyoBRV/ku-polls/wiki).
-* [Vision and Scope](https://github.com/KikyoBRV/ku-polls/wiki/Vision-and-Scope)
-* [Requirements](https://github.com/KikyoBRV/ku-polls/wiki/Requirements)
-* [Project Plan](https://github.com/KikyoBRV/ku-polls/wiki/Project-Plan)
+All project documents are in the [Project Wiki](../../wiki/Home).
+* [Vision and Scope](../../wiki/Vision-and-Scope)
+* [Requirements](../../wiki/Requirements)
+* [Project Plan](../../wiki/Project-Plan)
 
 ## Iteration Plans
-* [Iteration 1 Plan](https://github.com/KikyoBRV/ku-polls/wiki/Iteration-1-Plan) and [Project Board Iteration 1](https://github.com/users/KikyoBRV/projects/1)
+* [Iteration 1 Plan](../../wiki/Iteration-1-Plan) and [Project Board Iteration 1](https://github.com/users/KikyoBRV/projects/1)
