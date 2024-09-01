@@ -8,6 +8,33 @@ from .models import Question
 
 
 class QuestionModelTests(TestCase):
+    def test_is_published_with_future_question(self):
+        """
+        is_published() returns False for questions whose pub_date
+        is in the future.
+        """
+        time = timezone.now() + datetime.timedelta(days=30)
+        future_question = Question(pub_date=time)
+        self.assertIs(future_question.is_published(), False)
+
+    def test_is_published_with_default_pub_date(self):
+        """
+        is_published() returns True for questions whose pub_date
+        is the current date and time.
+        """
+        time = timezone.now()
+        default_question = Question(pub_date=time)
+        self.assertIs(default_question.is_published(), True)
+
+    def test_is_published_with_past_question(self):
+        """
+        is_published() returns True for questions whose pub_date
+        is in the past.
+        """
+        time = timezone.now() - datetime.timedelta(days=30)
+        past_question = Question(pub_date=time)
+        self.assertIs(past_question.is_published(), True)
+
     def test_was_published_recently_with_future_question(self):
         """
         was_published_recently() returns False for questions whose pub_date
