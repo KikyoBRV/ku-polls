@@ -3,6 +3,7 @@ import datetime
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib import messages
 
 from .models import Question
 
@@ -177,3 +178,26 @@ class QuestionDetailViewTests(TestCase):
         url = reverse("polls:detail", args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+    def test_redirect_to_index_with_error_message_when_cannot_vote(self):
+        """
+        Redirect to the index page with an error message if voting is not allowed for the question.
+        """
+        # Create a question with an end_date in the past
+        pub_date = timezone.now() - datetime.timedelta(days=10)
+        end_date = timezone.now() - datetime.timedelta(days=1)
+        question = Question.objects.create(
+            question_text="Past Question",
+            pub_date=pub_date,
+            end_date=end_date
+        )
+
+        # Access the detail page for the question
+        url = reverse('polls:detail', args=[question.id])
+        response = self.client.get(url, follow=True)  # Follow the redirect
+
+        # Verify the redirection to the index page
+        self.assertRedirects(response, reverse('polls:index'))
+
+        # Check that the error message is displayed
+        self.assertContains(response, "Voting is not allowed for this poll.")
