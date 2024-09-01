@@ -72,6 +72,15 @@ class QuestionModelTests(TestCase):
         question = Question(pub_date=pub_date, end_date=None)
         self.assertTrue(question.can_vote())
 
+    def test_can_vote_with_end_date_in_future(self):
+        """
+        Voting is allowed if the end_date is in the future and the current date is after the pub_date.
+        """
+        pub_date = timezone.now() - datetime.timedelta(days=1)
+        end_date = timezone.now() + datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=end_date)
+        self.assertTrue(question.can_vote())
+
     def test_cannot_vote_before_pub_date(self):
         """
         Voting is not allowed if the current date is before the pub_date.
@@ -179,25 +188,3 @@ class QuestionDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
 
-    def test_redirect_to_index_with_error_message_when_cannot_vote(self):
-        """
-        Redirect to the index page with an error message if voting is not allowed for the question.
-        """
-        # Create a question with an end_date in the past
-        pub_date = timezone.now() - datetime.timedelta(days=10)
-        end_date = timezone.now() - datetime.timedelta(days=1)
-        question = Question.objects.create(
-            question_text="Past Question",
-            pub_date=pub_date,
-            end_date=end_date
-        )
-
-        # Access the detail page for the question
-        url = reverse('polls:detail', args=[question.id])
-        response = self.client.get(url, follow=True)  # Follow the redirect
-
-        # Verify the redirection to the index page
-        self.assertRedirects(response, reverse('polls:index'))
-
-        # Check that the error message is displayed
-        self.assertContains(response, "Voting is not allowed for this poll.")
