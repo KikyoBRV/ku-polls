@@ -7,6 +7,11 @@
     <title>{{ question.question_text }}</title>
 </head>
 <body>
+    <div class="navigation">
+        <a href="{% url 'polls:index' %}" class="back-link">← Back to List of Polls</a>
+        <a href="{% url 'polls:results' question.id %}" class="results-link">Results</a>
+    </div>
+
     <form action="{% url 'polls:vote' question.id %}" method="post">
         {% csrf_token %}
         <fieldset>
@@ -25,3 +30,5 @@
     </form>
 </body>
 </html>
+
+

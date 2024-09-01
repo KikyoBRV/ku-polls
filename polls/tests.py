@@ -3,11 +3,39 @@ import datetime
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib import messages
 
 from .models import Question
 
 
 class QuestionModelTests(TestCase):
+    def test_is_published_with_future_question(self):
+        """
+        is_published() returns False for questions whose pub_date
+        is in the future.
+        """
+        time = timezone.now() + datetime.timedelta(days=30)
+        future_question = Question(pub_date=time)
+        self.assertIs(future_question.is_published(), False)
+
+    def test_is_published_with_default_pub_date(self):
+        """
+        is_published() returns True for questions whose pub_date
+        is the current date and time.
+        """
+        time = timezone.now()
+        default_question = Question(pub_date=time)
+        self.assertIs(default_question.is_published(), True)
+
+    def test_is_published_with_past_question(self):
+        """
+        is_published() returns True for questions whose pub_date
+        is in the past.
+        """
+        time = timezone.now() - datetime.timedelta(days=30)
+        past_question = Question(pub_date=time)
+        self.assertIs(past_question.is_published(), True)
+
     def test_was_published_recently_with_future_question(self):
         """
         was_published_recently() returns False for questions whose pub_date
@@ -35,6 +63,40 @@ class QuestionModelTests(TestCase):
                                                    seconds=59)
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
+
+    def test_can_vote_with_no_end_date(self):
+        """
+        Voting is allowed if the end_date is None (null) and the current date is after the pub_date.
+        """
+        pub_date = timezone.now() - datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=None)
+        self.assertTrue(question.can_vote())
+
+    def test_can_vote_with_end_date_in_future(self):
+        """
+        Voting is allowed if the end_date is in the future and the current date is after the pub_date.
+        """
+        pub_date = timezone.now() - datetime.timedelta(days=1)
+        end_date = timezone.now() + datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=end_date)
+        self.assertTrue(question.can_vote())
+
+    def test_cannot_vote_before_pub_date(self):
+        """
+        Voting is not allowed if the current date is before the pub_date.
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=None)
+        self.assertFalse(question.can_vote())
+
+    def test_cannot_vote_after_end_date(self):
+        """
+        Voting is not allowed if the current date is after the end_date.
+        """
+        pub_date = timezone.now() - datetime.timedelta(days=10)
+        end_date = timezone.now() - datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=end_date)
+        self.assertFalse(question.can_vote())
 
 
 def create_question(question_text, days):
@@ -125,3 +187,4 @@ class QuestionDetailViewTests(TestCase):
         url = reverse("polls:detail", args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+

@@ -5,3 +5,45 @@ li a {
 body {
     background: white url("images/background.png") no-repeat;
 }
+
+/* Style for the navigation section */
+.navigation {
+    margin: 10px;
+    text-align: right;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #007bff;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-link:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Style for the results link */
+.results-link {
+    text-decoration: none;
+    color: #28a745;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #eaf5ea;
+    border: 1px solid #28a745;
+    transition: background-color 0.3s, color 0.3s;
+    margin-left: 10px;
+}
+
+.results-link:hover {
+    background-color: #28a745;
+    color: white;
+}
