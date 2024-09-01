@@ -63,6 +63,31 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
 
+    def test_can_vote_with_no_end_date(self):
+        """
+        Voting is allowed if the end_date is None (null) and the current date is after the pub_date.
+        """
+        pub_date = timezone.now() - datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=None)
+        self.assertTrue(question.can_vote())
+
+    def test_cannot_vote_before_pub_date(self):
+        """
+        Voting is not allowed if the current date is before the pub_date.
+        """
+        pub_date = timezone.now() + datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=None)
+        self.assertFalse(question.can_vote())
+
+    def test_cannot_vote_after_end_date(self):
+        """
+        Voting is not allowed if the current date is after the end_date.
+        """
+        pub_date = timezone.now() - datetime.timedelta(days=10)
+        end_date = timezone.now() - datetime.timedelta(days=1)
+        question = Question(pub_date=pub_date, end_date=end_date)
+        self.assertFalse(question.can_vote())
+
 
 def create_question(question_text, days):
     """
