@@ -1,6 +1,9 @@
 [![Django CI](https://github.com/KikyoBRV/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/KikyoBRV/ku-polls/blob/main/.github/workflows/django.yml)
 
-# ku-polls
+An application to conduct online polls and surveys based
+on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
+additional features.
+
 The project will produce a web application for conducting polls and surveys that satisfies the requirements as specified in [Requirements](https://github.com/KikyoBRV/ku-polls/wiki/Requirements). The application will be written in Python and runnable on Windows, Linux, or MacOS hosts containing the required software.
 
 ## Requirements
