@@ -7,7 +7,7 @@ The project will produce a web application for conducting polls and surveys that
 * Requires Python 3.10+ or newer. Required Python packages are listed in [requirements.txt](https://github.com/KikyoBRV/ku-polls/blob/main/requirements.txt).
 
 ## Installation and configuration
-TBA
+You can see the step in [Installation and configuration](../../wiki/Installation-and-configuration)
 
 ## Running the Application
 1. Activate the virtual environment
@@ -45,4 +45,5 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 * [Project Plan](../../wiki/Project-Plan)
 
 ## Iteration Plans
-* [Iteration 1 Plan](../../wiki/Iteration-1-Plan) and [Project Board Iteration 1](https://github.com/users/KikyoBRV/projects/1)
+* [Iteration 1 Plan](../../wiki/Iteration-1-Plan) and [Project Board Iteration 1](../../projects/1)
+* [Iteration 2 Plan](../..wiki/Iteration-2-Plan)
