@@ -33,8 +33,6 @@ SECRET_KEY = config("SECRET_KEY", default='fake-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
-print("DEBUG Value Below")
-print(DEBUG)
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = config(
