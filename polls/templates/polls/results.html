@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Load the static files -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
     <title>Results for {{ question.question_text }}</title>
@@ -53,6 +52,15 @@
         .no-results {
             margin-top: 20px;
         }
+        /* Style for messages */
+        .message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -60,9 +68,13 @@
         <h1>Results for {{ question.question_text }}</h1>
 
         {% if messages %}
-            {% for message in messages %}
-                <h2>{{ message }}</h2>
-            {% endfor %}
+            <div>
+                {% for message in messages %}
+                    <div class="message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
 
         <table>
