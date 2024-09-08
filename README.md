@@ -41,6 +41,13 @@ You can see the step in [Installation and configuration](../../wiki/Installation
 |----------|-----------|
 | admin    | iloveisp |
 
+## Demo User Accounts
+| Username | Password |
+|----------|----------|
+| demo1    | hackme11 |
+| demo2    | hackme22 |
+| demo3    | hackme33 |
+
 ## Project Documentation
 All project documents are in the [Project Wiki](../../wiki/Home).
 * [Vision and Scope](../../wiki/Vision-and-Scope)
@@ -49,4 +56,5 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 
 ## Iteration Plans
 * [Iteration 1 Plan](../../wiki/Iteration-1-Plan) 
-* [Iteration 2 Plan](../../wiki/Iteration-2-Plan) 
+* [Iteration 2 Plan](../../wiki/Iteration-2-Plan)
+* [Iteration 3 Plan](../../wiki/Iteration-3-Plan) 
