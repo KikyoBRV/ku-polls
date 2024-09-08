@@ -1,66 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    &lt;!&ndash; Load the static files &ndash;&gt;-->
-<!--    {% load static %}-->
-<!--    <link rel="stylesheet" href="{% static 'polls/style.css' %}">-->
-<!--    <title>KU Polls</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            text-align: center;-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--        }-->
-<!--        .container {-->
-<!--            max-width: 800px;-->
-<!--            margin: 0 auto;-->
-<!--            padding: 20px;-->
-<!--        }-->
-<!--        .polls-list {-->
-<!--            margin-bottom: 30px;-->
-<!--        }-->
-<!--        .poll-item {-->
-<!--            margin-bottom: 10px;-->
-<!--        }-->
-<!--        .view-results {-->
-<!--            display: inline-block;-->
-<!--            padding: 10px 20px;-->
-<!--            margin-top: 10px;-->
-<!--            border: 1px solid #007bff;-->
-<!--            border-radius: 5px;-->
-<!--            background-color: #007bff;-->
-<!--            color: white;-->
-<!--            text-decoration: none;-->
-<!--            font-size: 16px;-->
-<!--        }-->
-<!--        .view-results:hover {-->
-<!--            background-color: #0056b3;-->
-<!--        }-->
-<!--        h1 {-->
-<!--            margin-top: 20px;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <div class="container">-->
-<!--        <h1>KU Polls</h1>-->
-
-<!--        {% if latest_question_list %}-->
-<!--            <ul class="polls-list">-->
-<!--            {% for question in latest_question_list %}-->
-<!--                <li class="poll-item">-->
-<!--                    <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>-->
-<!--                    <a class="view-results" href="{% url 'polls:results' question.id %}">Results</a>-->
-<!--                </li>-->
-<!--            {% endfor %}-->
-<!--            </ul>-->
-<!--        {% else %}-->
-<!--            <p>No polls are available.</p>-->
-<!--        {% endif %}-->
-<!--    </div>-->
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,41 +18,50 @@
         }
         h1 {
             margin-bottom: 20px;
+            color: #000062;
         }
         .polls-list {
             list-style: none;
             padding: 0;
         }
         .polls-list li {
-            display: inline-block;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin: 10px;
             padding: 10px;
             border: 2px solid #007bff;
             border-radius: 5px;
             background-color: #f4f4f4;
         }
-        .polls-list a {
-            text-decoration: none;
-            color: #007bff;
+        .polls-list .question {
+            flex: 1;
             font-size: 18px;
-            display: block;
         }
-        .polls-list a:hover {
-            text-decoration: underline;
+        .polls-list .actions {
+            display: flex;
+            gap: 10px; /* space between buttons */
         }
-        .view-results {
+        .view-results, .vote {
             display: inline-block;
             padding: 10px 20px;
-            margin-top: 20px;
             border: 1px solid #007bff;
             border-radius: 5px;
-            background-color: #007bff;
             color: white;
             text-decoration: none;
             font-size: 16px;
         }
+        .view-results {
+            background-color: #007bff;
+        }
         .view-results:hover {
             background-color: #0056b3;
+        }
+        .vote {
+            background-color: #28a745;
+        }
+        .vote:hover {
+            background-color: #218838;
         }
     </style>
     <title>KU Polls</title>
@@ -124,10 +70,26 @@
     <div class="container">
         <h1>KU Polls</h1>
 
+        {% if user.is_authenticated %}
+            Welcome back, {{ user.username }}
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form>
+        {% else %}
+            Please <a href="{% url 'login' %}?next={{ request.path }}">Login</a> to vote
+        {% endif %}
+
         {% if latest_question_list %}
             <ul class="polls-list">
                 {% for question in latest_question_list %}
-                    <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a> | <a href="{% url 'polls:results' question.id %}">Results</a></li>
+                    <li>
+                        <span class="question">{{ question.question_text }}</span>
+                        <div class="actions">
+                            <a class="vote" href="{% url 'polls:detail' question.id %}">Vote</a>
+                            <a class="view-results" href="{% url 'polls:results' question.id %}">Results</a>
+                        </div>
+                    </li>
                 {% endfor %}
             </ul>
         {% else %}

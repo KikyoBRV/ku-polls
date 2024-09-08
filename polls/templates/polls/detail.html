@@ -5,30 +5,91 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
     <title>{{ question.question_text }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .login-logout {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .login-logout button, .login-logout a {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .login-logout button:hover, .login-logout a:hover {
+            background-color: #0056b3;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="navigation">
-        <a href="{% url 'polls:index' %}" class="back-link">← Back to List of Polls</a>
-        <a href="{% url 'polls:results' question.id %}" class="results-link">Results</a>
-    </div>
+    <div class="container">
+        <div class="navigation">
+            <a href="{% url 'polls:index' %}" class="back-link">← Back to List of Polls</a>
+            <a href="{% url 'polls:results' question.id %}" class="results-link">Results</a>
+        </div>
 
-    <form action="{% url 'polls:vote' question.id %}" method="post">
-        {% csrf_token %}
-        <fieldset>
-            <legend>
-                <h1>{{ question.question_text }}</h1>
-            </legend>
-            {% if error_message %}
-                <p><strong>{{ error_message }}</strong></p>
+        <div class="login-logout">
+            {% if user.is_authenticated %}
+                <p>Welcome back, {{ user.username }}!</p>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Log Out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
             {% endif %}
-            {% for choice in question.choice_set.all %}
-                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-            {% endfor %}
-        </fieldset>
-        <input type="submit" value="Vote">
-    </form>
+        </div>
+
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <h1>{{ question.question_text }}</h1>
+                </legend>
+                {% if error_message %}
+                    <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+                {% for choice in question.choice_set.all %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
+                        {% if choice.id == selected_choice %}checked{% endif %}>
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Vote">
+        </form>
+    </div>
 </body>
 </html>
+
 
 

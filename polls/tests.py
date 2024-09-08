@@ -1,11 +1,14 @@
 import datetime
+import django.test
 
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate # to "login" a user using code
+from .models import Question, Choice
 from django.contrib import messages
-
-from .models import Question
+from mysite import settings
 
 
 class QuestionModelTests(TestCase):
@@ -189,3 +192,84 @@ class QuestionDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
 
+
+class UserAuthTest(TestCase):
+
+    def setUp(self):
+        # Create a test user
+        self.username = "testuser"
+        self.password = "FatChance!"
+        self.user1 = User.objects.create_user(
+            username=self.username,
+            password=self.password,
+            email="testuser@nowhere.com"
+        )
+        self.user1.first_name = "Tester"
+        self.user1.save()
+        # Create a poll question and choices
+        q = Question.objects.create(question_text="First Poll Question", pub_date=timezone.now())
+        for n in range(1, 4):
+            Choice.objects.create(choice_text=f"Choice {n}", question=q)
+        self.question = q
+
+    def test_logout(self):
+        """A user can logout using the logout url."""
+        logout_url = reverse("logout")
+        # Authenticate the user
+        self.client.login(username=self.username, password=self.password)
+        # Visit the logout page
+        response = self.client.post(logout_url)
+        self.assertEqual(response.status_code, 302)
+        # Redirect should be to the login page
+        self.assertRedirects(response, reverse(settings.LOGOUT_REDIRECT_URL))
+
+    def test_login_view(self):
+        """A user can login using the login view."""
+        login_url = reverse("login")
+        # Can get the login page
+        response = self.client.get(login_url)
+        self.assertEqual(response.status_code, 200)
+        # Can login using a POST request
+        form_data = {"username": self.username, "password": self.password}
+        response = self.client.post(login_url, form_data)
+        self.assertEqual(response.status_code, 302)
+        # Should redirect to the polls index page or the URL specified in LOGIN_REDIRECT_URL
+        self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
+
+    def test_auth_required_to_vote(self):
+        """Authentication is required to submit a vote."""
+        vote_url = reverse('polls:vote', args=[self.question.id])
+        choice = self.question.choice_set.first()
+        form_data = {"choice": f"{choice.id}"}
+        response = self.client.post(vote_url, form_data)
+        # Should be redirected to the login page
+        self.assertEqual(response.status_code, 302)
+        # Should redirect to the login page with the next parameter
+        login_with_next = f"{reverse('login')}?next={vote_url}"
+        self.assertRedirects(response, login_with_next)
+
+    def test_authenticated_user_can_vote(self):
+        """An authenticated user can submit a vote."""
+        vote_url = reverse('polls:vote', args=[self.question.id])
+        choice = self.question.choice_set.first()
+        form_data = {"choice": f"{choice.id}"}
+        # Authenticate the user
+        self.client.login(username=self.username, password=self.password)
+        # Submit a vote
+        response = self.client.post(vote_url, form_data)
+        # Should redirect to the results page
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('polls:results', args=[self.question.id]))
+        # Verify that the choice's vote count has increased
+        choice.refresh_from_db()
+        self.assertEqual(choice.votes, 1)
+
+    def test_login_with_invalid_credentials(self):
+        """A user cannot login using invalid credentials."""
+        login_url = reverse("login")
+        form_data = {"username": "testuser", "password": "WrongPassword!"}
+        response = self.client.post(login_url, form_data)
+        # Should remain on the login page with a 200 status code
+        self.assertEqual(response.status_code, 200)
+        # Check that the login attempt was not successful
+        self.assertContains(response, "Please enter a correct username and password.")
