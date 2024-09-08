@@ -22,7 +22,8 @@
                 <p><strong>{{ error_message }}</strong></p>
             {% endif %}
             {% for choice in question.choice_set.all %}
-                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}"
+                    {% if choice.id == selected_choice %}checked{% endif %}>
                 <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
             {% endfor %}
         </fieldset>
@@ -30,5 +31,6 @@
     </form>
 </body>
 </html>
+
 
 

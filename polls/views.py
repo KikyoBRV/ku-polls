@@ -43,6 +43,20 @@ class DetailView(generic.DetailView):
         """Excludes any questions that aren't published yet."""
         return Question.objects.filter(pub_date__lte=timezone.now())
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        question = self.get_object()
+
+        # Get the user's vote for this question if it exists
+        if self.request.user.is_authenticated:
+            try:
+                vote = Vote.objects.get(user=self.request.user, choice__question=question)
+                context['selected_choice'] = vote.choice.id
+            except Vote.DoesNotExist:
+                context['selected_choice'] = None
+
+        return context
+
     def get(self, request, *args, **kwargs):
         question = self.get_object()
         if not question.can_vote():
