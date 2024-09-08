@@ -61,10 +61,40 @@
             border: 1px solid #c3e6cb;
             border-radius: 5px;
         }
+        /* Style for login/logout section */
+        .login-logout {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .login-logout button, .login-logout a {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .login-logout button:hover, .login-logout a:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="login-logout">
+            {% if user.is_authenticated %}
+                <p>Welcome back, {{ user.username }}!</p>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Log Out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+            {% endif %}
+        </div>
+
         <h1>Results for {{ question.question_text }}</h1>
 
         {% if messages %}
