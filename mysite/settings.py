@@ -15,6 +15,9 @@ from pathlib import Path
 from decouple import Config, Csv
 from dj_database_url import parse as db_url
 
+from dotenv import load_dotenv
+load_dotenv(".env")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,7 +33,8 @@ SECRET_KEY = config("SECRET_KEY", default='fake-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
-
+print("DEBUG Value Below")
+print(DEBUG)
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = config(
@@ -161,21 +165,15 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'logs/django_events.log',
-            'formatter': 'details',
-        },
     },
     'loggers': {
         'polls': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,  # Set to False to avoid duplicate logs
         },
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': True,
         },
