@@ -14,30 +14,6 @@ The project will produce a web application for conducting polls and surveys that
 ## Installation and configuration
 You can see the step in [Installation and configuration](../../wiki/Installation-and-configuration)
 
-## Running the Application
-1. Activate the virtual environment
-   * On Linux or MacOS
-   ```
-   source venv/bin/activate
-   ```
-   * On Window
-   ```
-   venv\Scripts\activate
-   ```
-2. Start the Django development server
-   ```
-   python manage.py runserver
-   ```
-3. Open the web browser and go to this URL
-   ```
-   http://127.0.0.1:8000/polls/
-   ```
-   If you want to deactivate the server, press `Ctrl + C`
-4. To deactivate virtual environment
-   ```
-   deactivate
-   ```
-
 ## Demo Admin Account
 | Username | Password  |
 |----------|-----------|
