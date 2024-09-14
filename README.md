@@ -1,3 +1,5 @@
+# KU Polls: Online Questions Polls
+
 [![Django CI](../../actions/workflows/unit-tests.yml/badge.svg)](../../actions/workflows/unit-tests.yml)
 
 An application to conduct online polls and surveys based
