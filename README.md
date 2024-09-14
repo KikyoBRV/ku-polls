@@ -1,4 +1,6 @@
-[![Django CI](https://github.com/KikyoBRV/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/KikyoBRV/ku-polls/blob/main/.github/workflows/django.yml)
+# KU Polls: Online Questions Polls
+
+[![Django CI](../../actions/workflows/unit-tests.yml/badge.svg)](../../actions/workflows/unit-tests.yml)
 
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
@@ -58,3 +60,4 @@ All project documents are in the [Project Wiki](../../wiki/Home).
 * [Iteration 1 Plan](../../wiki/Iteration-1-Plan) 
 * [Iteration 2 Plan](../../wiki/Iteration-2-Plan)
 * [Iteration 3 Plan](../../wiki/Iteration-3-Plan) 
+* [Iteration 4 Plan](../../wiki/Iteration-4-Plan) 

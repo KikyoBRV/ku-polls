@@ -1,0 +1,198 @@
+[
+{
+  "model": "polls.question",
+  "pk": 2,
+  "fields": {
+    "question_text": "Which futuristic technology would you be most excited to experience firsthand?",
+    "pub_date": "2024-08-31T17:00:00Z",
+    "end_date": null
+  }
+},
+{
+  "model": "polls.question",
+  "pk": 3,
+  "fields": {
+    "question_text": "Which form of entertainment do you prefer for relaxation?",
+    "pub_date": "2024-08-25T11:34:36Z",
+    "end_date": null
+  }
+},
+{
+  "model": "polls.question",
+  "pk": 6,
+  "fields": {
+    "question_text": "Which aspect of an IDE s user interface do you find most important for productivity?",
+    "pub_date": "2024-08-23T18:03:43Z",
+    "end_date": null
+  }
+},
+{
+  "model": "polls.question",
+  "pk": 7,
+  "fields": {
+    "question_text": "If you could add one feature to your favorite IDE, what would it be?",
+    "pub_date": "2024-09-08T18:04:13Z",
+    "end_date": null
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 4,
+  "fields": {
+    "question": 2,
+    "choice_text": "Fully immersive virtual reality"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 5,
+  "fields": {
+    "question": 2,
+    "choice_text": "Personal flying vehicles"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 6,
+  "fields": {
+    "question": 2,
+    "choice_text": "AI-driven personal assistants with emotional intelligence"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 7,
+  "fields": {
+    "question": 2,
+    "choice_text": "Human life extension and anti-aging treatments"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 8,
+  "fields": {
+    "question": 3,
+    "choice_text": "Reading a book"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 9,
+  "fields": {
+    "question": 3,
+    "choice_text": "Watching movies"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 10,
+  "fields": {
+    "question": 3,
+    "choice_text": "Listening to music"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 11,
+  "fields": {
+    "question": 3,
+    "choice_text": "Playing video games"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 20,
+  "fields": {
+    "question": 6,
+    "choice_text": "Code navigation and search features"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 21,
+  "fields": {
+    "question": 6,
+    "choice_text": "Integrated terminal and shell access"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 22,
+  "fields": {
+    "question": 6,
+    "choice_text": "Split view and multi-window support"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 23,
+  "fields": {
+    "question": 6,
+    "choice_text": "Customizable workspace layout"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 24,
+  "fields": {
+    "question": 7,
+    "choice_text": "Advanced AI-driven code suggestions"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 25,
+  "fields": {
+    "question": 7,
+    "choice_text": "Real-time collaboration tools"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 26,
+  "fields": {
+    "question": 7,
+    "choice_text": "Seamless cloud integration for deployment"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 27,
+  "fields": {
+    "question": 7,
+    "choice_text": "Enhanced visualizations for code structure"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 28,
+  "fields": {
+    "question": 7,
+    "choice_text": "Other"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 29,
+  "fields": {
+    "question": 6,
+    "choice_text": "Other"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 30,
+  "fields": {
+    "question": 3,
+    "choice_text": "Other"
+  }
+},
+{
+  "model": "polls.choice",
+  "pk": 31,
+  "fields": {
+    "question": 2,
+    "choice_text": "Other"
+  }
+}
+]
