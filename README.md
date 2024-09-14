@@ -1,4 +1,4 @@
-[![Django CI](https://github.com/KikyoBRV/ku-polls/actions/workflows/django.yml/badge.svg)](https://github.com/KikyoBRV/ku-polls/blob/main/.github/workflows/django.yml)
+[![Django CI](../../actions/workflows/unit-tests.yml/badge.svg)](../../actions/workflows/unit-tests.yml)
 
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
