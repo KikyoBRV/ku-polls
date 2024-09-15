@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.models import User
 
+
 class Question(models.Model):
     """
     Represents a poll question.
@@ -23,7 +24,11 @@ class Question(models.Model):
 
     def is_published(self):
         """
-        Returns True if the current local date-time is on or after the question’s publication date.
+        Returns True if the current local date-time is on or after the question’s
+        publication date.
+
+        Returns:
+            bool: True if the question is published, False otherwise.
         """
         now = timezone.localtime()  # Get the current local date-time
         return now >= self.pub_date
@@ -32,6 +37,9 @@ class Question(models.Model):
         """
         Returns True if the current local date-time is between pub_date and end_date.
         If end_date is null, then voting is allowed anytime after pub_date.
+
+        Returns:
+            bool: True if voting is allowed, False otherwise.
         """
         now = timezone.localtime()  # Get the current local date-time
         if self.end_date:
@@ -48,12 +56,10 @@ class Question(models.Model):
         Checks if the question was published within the last day.
 
         Returns:
-            bool: True if the question was published within the last day,
-                  False otherwise.
+            bool: True if the question was published within the last day, False otherwise.
         """
         now = timezone.now()
         return now - timedelta(days=1) <= self.pub_date <= now
-
 
 
 class Choice(models.Model):
@@ -63,15 +69,18 @@ class Choice(models.Model):
     Attributes:
         question (Question): The question this choice is related to.
         choice_text (str): The text of the choice.
-        votes (int): The number of votes this choice has received.
     """
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
-    #votes = models.IntegerField(default=0)
 
     @property
     def votes(self):
-        """return the votes for this choice"""
+        """
+        Returns the number of votes for this choice.
+
+        Returns:
+            int: The number of votes.
+        """
         return self.vote_set.count()
 
     def __str__(self):
@@ -79,6 +88,12 @@ class Choice(models.Model):
 
 
 class Vote(models.Model):
-    """A vote by a user for a choice in a poll"""
+    """
+    A vote by a user for a choice in a poll.
+
+    Attributes:
+        choice (Choice): The choice being voted for.
+        user (User): The user who cast the vote.
+    """
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
