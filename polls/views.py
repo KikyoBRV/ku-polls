@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -23,7 +23,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions (not including those set to be published in the future)."""
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")
 
 
 class DetailView(generic.DetailView):
@@ -51,9 +51,12 @@ class DetailView(generic.DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        """Redirect to the index page if the question is closed or does not exist."""
-        question = get_object_or_404(Question, pk=self.kwargs['pk'])
-        if not question.can_vote():
+        """Redirect to the index page if the question is from the future or does not exist."""
+        try:
+            question = self.get_object()
+            if question.pub_date > timezone.now() or not question.can_vote():
+                return HttpResponseRedirect(reverse('polls:index'))
+        except Http404:
             return HttpResponseRedirect(reverse('polls:index'))
 
         return super().get(request, *args, **kwargs)
