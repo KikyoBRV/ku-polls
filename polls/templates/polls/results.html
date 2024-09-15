@@ -79,6 +79,12 @@
         .login-logout button:hover, .login-logout a:hover {
             background-color: #0056b3;
         }
+        .signup {
+            background-color: #17a2b8;
+        }
+        .signup:hover {
+            background-color: #138496;
+        }
     </style>
 </head>
 <body>
@@ -86,12 +92,13 @@
         <div class="login-logout">
             {% if user.is_authenticated %}
                 <p>Welcome back, {{ user.username }}!</p>
-                <form action="{% url 'logout' %}" method="post">
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit">Log Out</button>
                 </form>
             {% else %}
                 <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                <a class="signup" href="{% url 'polls:signup' %}">Sign Up</a>
             {% endif %}
         </div>
 

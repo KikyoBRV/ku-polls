@@ -43,6 +43,12 @@
         .login-logout button:hover, .login-logout a:hover {
             background-color: #0056b3;
         }
+        .signup {
+            background-color: #17a2b8;
+        }
+        .signup:hover {
+            background-color: #138496;
+        }
         form {
             margin-top: 20px;
         }
@@ -67,6 +73,7 @@
                 </form>
             {% else %}
                 <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                <a class="signup" href="{% url 'polls:signup' %}">Sign Up</a>
             {% endif %}
         </div>
 
@@ -90,6 +97,3 @@
     </div>
 </body>
 </html>
-
-
-

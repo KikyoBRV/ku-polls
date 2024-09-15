@@ -10,6 +10,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            position: relative; /* Added to position the button */
         }
         .container {
             max-width: 800px;
@@ -42,7 +43,7 @@
             display: flex;
             gap: 10px; /* space between buttons */
         }
-        .view-results, .vote {
+        .view-results, .vote, .signup {
             display: inline-block;
             padding: 10px 20px;
             border: 1px solid #007bff;
@@ -63,10 +64,20 @@
         .vote:hover {
             background-color: #218838;
         }
+        .signup {
+            background-color: #17a2b8;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .signup:hover {
+            background-color: #138496;
+        }
     </style>
     <title>KU Polls</title>
 </head>
 <body>
+    <a class="signup" href="{% url 'polls:signup' %}">Sign Up</a>
     <div class="container">
         <h1>KU Polls</h1>
 
@@ -98,4 +109,3 @@
     </div>
 </body>
 </html>
-
