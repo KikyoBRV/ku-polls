@@ -83,7 +83,7 @@
 
         {% if user.is_authenticated %}
             Welcome back, {{ user.username }}
-            <form action="{% url 'logout' %}" method="post">
+            <form id="logout-form" action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit">Log Out</button>
             </form>
@@ -107,5 +107,21 @@
             <p>No polls are available.</p>
         {% endif %}
     </div>
+
+    <script>
+        // JavaScript to refresh the page after logout
+        document.getElementById('logout-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(() => {
+                // Refresh the page after successful logout
+                window.location.reload();
+            });
+        });
+    </script>
 </body>
 </html>

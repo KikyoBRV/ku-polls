@@ -92,7 +92,7 @@
         <div class="login-logout">
             {% if user.is_authenticated %}
                 <p>Welcome back, {{ user.username }}!</p>
-                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit">Log Out</button>
                 </form>
@@ -137,5 +137,21 @@
 
         <a class="view-results" href="{% url 'polls:index' %}">Back to List of Polls</a>
     </div>
+
+    <script>
+        // JavaScript to handle logout and refresh the page
+        document.getElementById('logout-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            }).then(() => {
+                // Refresh the page to reflect the logged-out state
+                window.location.reload();
+            });
+        });
+    </script>
 </body>
 </html>
