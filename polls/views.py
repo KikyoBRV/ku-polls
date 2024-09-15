@@ -34,10 +34,12 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions (not including those set to be published in the future)."""
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[:5]
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")
 
 
 class DetailView(generic.DetailView):
+    """View for displaying a specific question's details."""
+
     model = Question
     template_name = "polls/detail.html"
 
@@ -46,10 +48,10 @@ class DetailView(generic.DetailView):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
     def get_context_data(self, **kwargs):
+        """Add the user's vote to the context if authenticated."""
         context = super().get_context_data(**kwargs)
         question = self.get_object()
 
-        # Get the user's vote for this question if it exists
         if self.request.user.is_authenticated:
             try:
                 vote = Vote.objects.get(user=self.request.user, choice__question=question)
@@ -60,14 +62,12 @@ class DetailView(generic.DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        # Check if the question exists and if it's a future question
+        """Redirect to the index page if the question is from the future or does not exist."""
         try:
-            question = get_object_or_404(Question, pk=self.kwargs['pk'])
-            if question.pub_date > timezone.now():
-                # Redirect to the index page if the question is from the future
+            question = self.get_object()
+            if question.pub_date > timezone.now() or not question.can_vote():
                 return HttpResponseRedirect(reverse('polls:index'))
         except Http404:
-            # Redirect to the index page if the question does not exist
             return HttpResponseRedirect(reverse('polls:index'))
 
         return super().get(request, *args, **kwargs)
