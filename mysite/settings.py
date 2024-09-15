@@ -14,8 +14,8 @@ import os
 from pathlib import Path
 from decouple import Config, Csv
 from dj_database_url import parse as db_url
-
 from dotenv import load_dotenv
+
 load_dotenv(".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,7 +29,6 @@ config = Config(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY", default='fake-secret-key')
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
@@ -83,17 +82,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
 DATABASES = {
-    'default': config('DATABASE_URL',
-                      default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
-                      cast=db_url)
+    'default': config(
+        'DATABASE_URL',
+        default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'),
+        cast=db_url
+    )
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -114,11 +112,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    # username & password authentication
-   'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
-LOGIN_REDIRECT_URL = 'polls:index'  # after login, show list of polls
-LOGOUT_REDIRECT_URL = 'login'       # after logout, return to login page
+
+LOGIN_REDIRECT_URL = 'polls:index'  # After login, show list of polls
+LOGOUT_REDIRECT_URL = 'login'       # After logout, return to login page
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -130,7 +128,6 @@ TIME_ZONE = config("TIME_ZONE", default="Asia/Bangkok")
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -177,5 +174,3 @@ LOGGING = {
         },
     },
 }
-
-
