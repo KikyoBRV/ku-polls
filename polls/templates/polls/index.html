@@ -4,18 +4,31 @@
     <!-- Load the static files -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
-            position: relative; /* Added to position the button */
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+            position: relative; /* Allows absolute positioning for the button */
+        }
+        body {
+            background-image: url("{% static 'polls/images/background.PNG' %}");
+            background-size: cover;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            /* Removed background-color to ensure it's transparent */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: transparent; /* Ensures no white frame */
         }
         h1 {
             margin-bottom: 20px;
@@ -73,6 +86,8 @@
             position: absolute;
             top: 20px;
             right: 20px;
+            text-decoration: none;
+            /* Removed any background-color conflicts */
         }
         .signup:hover {
             background-color: #138496;
@@ -80,11 +95,29 @@
         .closed {
             color: #ff0000; /* Red color for closed status */
         }
+        .auth-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px; /* Space below header */
+        }
+        .button {
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+            background-color: #007bff;
+            margin-left: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
     </style>
     <title>KU Polls</title>
 </head>
 <body>
     <a class="signup" href="{% url 'polls:signup' %}">Sign Up</a>
+
     <div class="container">
         <h1>KU Polls</h1>
 

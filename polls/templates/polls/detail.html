@@ -6,10 +6,27 @@
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
     <title>{{ question.question_text }}</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
+            position: relative; /* Allows absolute positioning for the buttons */
+        }
+        body {
+            background-image: url("{% static 'polls/images/background.PNG' %}");
+            background-size: cover;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: transparent; /* Remove white background frame */
         }
         .navigation {
             margin-bottom: 20px;
@@ -20,11 +37,6 @@
         }
         .navigation a:hover {
             text-decoration: underline;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
         }
         .login-logout {
             text-align: right;
@@ -54,6 +66,18 @@
         }
         input[type="radio"] {
             margin-right: 10px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
