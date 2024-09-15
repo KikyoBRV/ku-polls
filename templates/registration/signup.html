@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Load the static files -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'polls/images/background.PNG' %}");
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* semi-transparent background */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .guest-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .guest-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <title>Sign Up</title>
+</head>
+<body>
+    <a href="{% url 'polls:index' %}" class="guest-button">Continue as Guest</a>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <p>
+                <button type="submit">Sign Up</button>
+            </p>
+            <input type="hidden" name="next" value="{{ next }}" />
+            <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+        </form>
+    </div>
+</body>
+</html>

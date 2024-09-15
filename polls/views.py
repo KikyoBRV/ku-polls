@@ -2,9 +2,11 @@ import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.dispatch import receiver
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.views import generic
@@ -58,10 +60,16 @@ class DetailView(generic.DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        question = self.get_object()
-        if not question.can_vote():
-            messages.error(request, "Voting is not allowed for this poll.")
+        # Check if the question exists and if it's a future question
+        try:
+            question = get_object_or_404(Question, pk=self.kwargs['pk'])
+            if question.pub_date > timezone.now():
+                # Redirect to the index page if the question is from the future
+                return HttpResponseRedirect(reverse('polls:index'))
+        except Http404:
+            # Redirect to the index page if the question does not exist
             return HttpResponseRedirect(reverse('polls:index'))
+
         return super().get(request, *args, **kwargs)
 
 
@@ -69,6 +77,17 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = "polls/results.html"
 
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            # Redirect to the polls:index view after signing up
+            return redirect('polls:index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/signup.html', {'form': form})
 
 @login_required
 def vote(request, question_id):
@@ -114,3 +133,4 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
