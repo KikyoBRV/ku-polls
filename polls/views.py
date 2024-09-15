@@ -1,10 +1,8 @@
 import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.dispatch import receiver
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -15,24 +13,6 @@ from .models import Choice, Question, Vote
 
 
 logger = logging.getLogger('polls')
-
-
-@receiver(user_logged_in)
-def user_logged_in_handler(sender, request, user, **kwargs):
-    """Log user login events."""
-    logger.info(f'User {user.username} logged in from IP {get_client_ip(request)}.')
-
-
-@receiver(user_logged_out)
-def user_logged_out_handler(sender, request, user, **kwargs):
-    """Log user logout events."""
-    logger.info(f'User {user.username} logged out from IP {get_client_ip(request)}.')
-
-
-@receiver(user_login_failed)
-def user_logged_in_fail_handler(sender, request, **kwargs):
-    """Log failed login attempts."""
-    logger.warning(f'Failed login from IP {get_client_ip(request)}.')
 
 
 class IndexView(generic.ListView):
@@ -71,12 +51,9 @@ class DetailView(generic.DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        """Redirect to the index page if the question is from the future or does not exist."""
-        try:
-            question = get_object_or_404(Question, pk=self.kwargs['pk'])
-            if question.pub_date > timezone.now():
-                return HttpResponseRedirect(reverse('polls:index'))
-        except Http404:
+        """Redirect to the index page if the question is closed or does not exist."""
+        question = get_object_or_404(Question, pk=self.kwargs['pk'])
+        if not question.can_vote():
             return HttpResponseRedirect(reverse('polls:index'))
 
         return super().get(request, *args, **kwargs)
