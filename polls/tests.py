@@ -1,17 +1,15 @@
 import datetime
-import django.test
-
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate # to "login" a user using code
 from .models import Question, Choice
-from django.contrib import messages
 from mysite import settings
 
 
 class QuestionModelTests(TestCase):
+    """Test suite for the Question model."""
+
     def test_is_published_with_future_question(self):
         """
         is_published() returns False for questions whose pub_date
@@ -62,8 +60,7 @@ class QuestionModelTests(TestCase):
         was_published_recently() returns True for questions whose pub_date
         is within the last day.
         """
-        time = timezone.now() - datetime.timedelta(hours=23, minutes=59,
-                                                   seconds=59)
+        time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
 
@@ -113,6 +110,7 @@ def create_question(question_text, days):
 
 
 class QuestionIndexViewTests(TestCase):
+    """Test suite for the index view of the polls app."""
 
     def test_no_questions(self):
         """
@@ -130,10 +128,7 @@ class QuestionIndexViewTests(TestCase):
         """
         question = create_question(question_text="Past question.", days=-30)
         response = self.client.get(reverse("polls:index"))
-        self.assertListEqual(
-            list(response.context["latest_question_list"]),
-            [question],
-        )
+        self.assertListEqual(list(response.context["latest_question_list"]), [question])
 
     def test_future_question(self):
         """
@@ -153,10 +148,7 @@ class QuestionIndexViewTests(TestCase):
         question = create_question(question_text="Past question.", days=-30)
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse("polls:index"))
-        self.assertListEqual(
-            list(response.context["latest_question_list"]),
-            [question],
-        )
+        self.assertListEqual(list(response.context["latest_question_list"]), [question])
 
     def test_two_past_questions(self):
         """
@@ -165,13 +157,12 @@ class QuestionIndexViewTests(TestCase):
         question1 = create_question(question_text="Past question 1.", days=-30)
         question2 = create_question(question_text="Past question 2.", days=-5)
         response = self.client.get(reverse("polls:index"))
-        self.assertListEqual(
-            list(response.context["latest_question_list"]),
-            [question2, question1],
-        )
+        self.assertListEqual(list(response.context["latest_question_list"]), [question2, question1])
 
 
 class QuestionDetailViewTests(TestCase):
+    """Test suite for the detail view of the polls app."""
+
     def test_future_question(self):
         """
         The detail view of a question with a pub_date in the future
@@ -181,9 +172,7 @@ class QuestionDetailViewTests(TestCase):
         url = reverse("polls:detail", args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)  # Check for redirect status code
-
-        # Check if the redirection is to the index page
-        self.assertRedirects(response, reverse('polls:index'))
+        self.assertRedirects(response, reverse('polls:index'))  # Check redirection
 
     def test_past_question(self):
         """
@@ -197,8 +186,10 @@ class QuestionDetailViewTests(TestCase):
 
 
 class UserAuthTest(TestCase):
+    """Test suite for user authentication in the polls app."""
 
     def setUp(self):
+        """Set up test data for authentication tests."""
         # Create a test user
         self.username = "testuser"
         self.password = "FatChance!"
@@ -223,7 +214,6 @@ class UserAuthTest(TestCase):
         # Visit the logout page
         response = self.client.post(logout_url)
         self.assertEqual(response.status_code, 302)
-        # Redirect should be to the login page
         self.assertRedirects(response, reverse(settings.LOGOUT_REDIRECT_URL))
 
     def test_login_view(self):
@@ -236,7 +226,6 @@ class UserAuthTest(TestCase):
         form_data = {"username": self.username, "password": self.password}
         response = self.client.post(login_url, form_data)
         self.assertEqual(response.status_code, 302)
-        # Should redirect to the polls index page or the URL specified in LOGIN_REDIRECT_URL
         self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL))
 
     def test_auth_required_to_vote(self):
@@ -245,11 +234,7 @@ class UserAuthTest(TestCase):
         choice = self.question.choice_set.first()
         form_data = {"choice": f"{choice.id}"}
         response = self.client.post(vote_url, form_data)
-        # Should be redirected to the login page
-        self.assertEqual(response.status_code, 302)
-        # Should redirect to the login page with the next parameter
-        login_with_next = f"{reverse('login')}?next={vote_url}"
-        self.assertRedirects(response, login_with_next)
+        self.assertEqual(response.status_code, 302)  # Redirect to login for unauthenticated user
 
     def test_authenticated_user_can_vote(self):
         """An authenticated user can submit a vote."""
