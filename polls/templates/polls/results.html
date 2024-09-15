@@ -6,15 +6,22 @@
     <title>Results for {{ question.question_text }}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            background-image: url("{% static 'polls/images/background.PNG' %}");
+            background-size: cover;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            background-position: center;
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            background-color: transparent; /* Make the container fully transparent */
+            border-radius: 10px;
+            box-shadow: none; /* Remove any shadow if applied */
         }
         h1 {
             margin-bottom: 20px;
