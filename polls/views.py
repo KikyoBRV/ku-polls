@@ -1,11 +1,9 @@
 import logging
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.dispatch import receiver
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -16,19 +14,10 @@ from .models import Choice, Question, Vote
 
 logger = logging.getLogger('polls')
 
-@receiver(user_logged_in)
-def user_logged_in_handler(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} logged in from IP {get_client_ip(request)}.')
-
-@receiver(user_logged_out)
-def user_logged_out_handler(sender, request, user, **kwargs):
-    logger.info(f'User {user.username} logged out from IP {get_client_ip(request)}.')
-
-@receiver(user_login_failed)
-def user_logged_in_fail_handler(sender, request, **kwargs):
-    logger.warning(f' Failed login from IP {get_client_ip(request)}.')
 
 class IndexView(generic.ListView):
+    """View for displaying a list of the most recent questions."""
+
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"
 
@@ -38,6 +27,8 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
+    """View for displaying a specific question's details."""
+
     model = Question
     template_name = "polls/detail.html"
 
@@ -46,10 +37,10 @@ class DetailView(generic.DetailView):
         return Question.objects.filter(pub_date__lte=timezone.now())
 
     def get_context_data(self, **kwargs):
+        """Add the user's vote to the context if authenticated."""
         context = super().get_context_data(**kwargs)
         question = self.get_object()
 
-        # Get the user's vote for this question if it exists
         if self.request.user.is_authenticated:
             try:
                 vote = Vote.objects.get(user=self.request.user, choice__question=question)
@@ -60,38 +51,37 @@ class DetailView(generic.DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        # Check if the question exists and if it's a future question
-        try:
-            question = get_object_or_404(Question, pk=self.kwargs['pk'])
-            if question.pub_date > timezone.now():
-                # Redirect to the index page if the question is from the future
-                return HttpResponseRedirect(reverse('polls:index'))
-        except Http404:
-            # Redirect to the index page if the question does not exist
+        """Redirect to the index page if the question is closed or does not exist."""
+        question = get_object_or_404(Question, pk=self.kwargs['pk'])
+        if not question.can_vote():
             return HttpResponseRedirect(reverse('polls:index'))
 
         return super().get(request, *args, **kwargs)
 
 
 class ResultsView(generic.DetailView):
+    """View for displaying the results of a specific question."""
+
     model = Question
     template_name = "polls/results.html"
 
+
 def signup(request):
+    """Handle user signups and log the user in upon successful registration."""
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            # Redirect to the polls:index view after signing up
             return redirect('polls:index')
     else:
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+
 @login_required
 def vote(request, question_id):
-    """Vote for a choice on a question (poll)."""
+    """Handle voting for a choice on a question."""
     question = get_object_or_404(Question, pk=question_id)
 
     if not question.can_vote():
@@ -116,11 +106,13 @@ def vote(request, question_id):
         vote.choice = selected_choice
         vote.save()
         messages.success(request, f"Your vote was updated to '{selected_choice.choice_text}'")
-        logger.info(f'User {this_user.username} updated their vote to "{selected_choice.choice_text}" for question "{question.question_text}".')
+        logger.info(f'User {this_user.username} updated their vote to "{selected_choice.choice_text}" '
+                    f'for question "{question.question_text}".')
     except Vote.DoesNotExist:
         vote = Vote.objects.create(user=this_user, choice=selected_choice)
         messages.success(request, f"You voted for '{selected_choice.choice_text}'")
-        logger.info(f'User {this_user.username} voted for "{selected_choice.choice_text}" for question "{question.question_text}".')
+        logger.info(f'User {this_user.username} voted for "{selected_choice.choice_text}" '
+                    f'for question "{question.question_text}".')
 
     return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
@@ -133,4 +125,3 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
-
