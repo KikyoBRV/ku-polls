@@ -21,10 +21,26 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+        .guest-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .guest-button:hover {
+            background-color: #0056b3;
+        }
     </style>
     <title>Sign Up</title>
 </head>
 <body>
+    <a href="{% url 'polls:index' %}" class="guest-button">Continue as Guest</a>
     <div class="container">
         <h2>Sign Up</h2>
         <form method="post">
@@ -37,7 +53,6 @@
             </p>
             <input type="hidden" name="next" value="{{ next }}" />
             <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
-
         </form>
     </div>
 </body>
