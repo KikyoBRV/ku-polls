@@ -1,6 +1,7 @@
 # KU Polls: Online Questions Polls
 
 [![Django CI](../../actions/workflows/unit-tests.yml/badge.svg)](../../actions/workflows/unit-tests.yml)
+[![Run Flake8 & Flake8 docstrings](../../actions/workflows/Run-flake8.yml/badge.svg)](../../actions/workflows/Run-flake8.yml)
 
 An application to conduct online polls and surveys based
 on the [Django Tutorial project](https://docs.djangoproject.com/en/5.1/intro/tutorial01/), with
