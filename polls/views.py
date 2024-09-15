@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 from django.dispatch import receiver
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
@@ -58,10 +58,16 @@ class DetailView(generic.DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        question = self.get_object()
-        if not question.can_vote():
-            messages.error(request, "Voting is not allowed for this poll.")
+        # Check if the question exists and if it's a future question
+        try:
+            question = get_object_or_404(Question, pk=self.kwargs['pk'])
+            if question.pub_date > timezone.now():
+                # Redirect to the index page if the question is from the future
+                return HttpResponseRedirect(reverse('polls:index'))
+        except Http404:
+            # Redirect to the index page if the question does not exist
             return HttpResponseRedirect(reverse('polls:index'))
+
         return super().get(request, *args, **kwargs)
 
 
