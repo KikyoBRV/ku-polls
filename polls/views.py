@@ -129,11 +129,13 @@ def vote(request, question_id):
         vote.choice = selected_choice
         vote.save()
         messages.success(request, f"Your vote was updated to '{selected_choice.choice_text}'")
-        logger.info(f'User {this_user.username} updated their vote to "{selected_choice.choice_text}" for question "{question.question_text}".')
+        logger.info(f'User {this_user.username} updated their vote to "{selected_choice.choice_text}" '
+                    f'for question "{question.question_text}".')
     except Vote.DoesNotExist:
         vote = Vote.objects.create(user=this_user, choice=selected_choice)
         messages.success(request, f"You voted for '{selected_choice.choice_text}'")
-        logger.info(f'User {this_user.username} voted for "{selected_choice.choice_text}" for question "{question.question_text}".')
+        logger.info(f'User {this_user.username} voted for "{selected_choice.choice_text}" '
+                    f'for question "{question.question_text}".')
 
     return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
 
