@@ -1,4 +1,3 @@
-import datetime
 from django.contrib import admin
 from django.db import models
 from django.utils import timezone
@@ -8,7 +7,7 @@ from django.contrib.auth.models import User
 
 class Question(models.Model):
     """
-    Represents a poll question.
+    Represent a poll question.
 
     Attributes:
         question_text (str): The text of the question.
@@ -24,24 +23,17 @@ class Question(models.Model):
 
     def is_published(self):
         """
-        Returns True if the current local date-time is on or after the question’s
-        publication date.
-
-        Returns:
-            bool: True if the question is published, False otherwise.
+        Return True if the current local date-time is on or after the question’s publication date.
         """
-        now = timezone.localtime()  # Get the current local date-time
+        now = timezone.localtime()
         return now >= self.pub_date
 
     def can_vote(self):
         """
-        Returns True if the current local date-time is between pub_date and end_date.
+        Return True if the current local date-time is between pub_date and end_date.
         If end_date is null, then voting is allowed anytime after pub_date.
-
-        Returns:
-            bool: True if voting is allowed, False otherwise.
         """
-        now = timezone.localtime()  # Get the current local date-time
+        now = timezone.localtime()
         if self.end_date:
             return self.pub_date <= now <= self.end_date
         return now >= self.pub_date
@@ -53,10 +45,11 @@ class Question(models.Model):
     )
     def was_published_recently(self):
         """
-        Checks if the question was published within the last day.
+        Check if the question was published within the last day.
 
         Returns:
-            bool: True if the question was published within the last day, False otherwise.
+            bool: True if the question was published within the last day,
+                  False otherwise.
         """
         now = timezone.now()
         return now - timedelta(days=1) <= self.pub_date <= now
@@ -64,11 +57,12 @@ class Question(models.Model):
 
 class Choice(models.Model):
     """
-    Represents a choice for a poll question.
+    Represent a choice for a poll question.
 
     Attributes:
         question (Question): The question this choice is related to.
         choice_text (str): The text of the choice.
+        votes (int): The number of votes this choice has received.
     """
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
@@ -76,10 +70,7 @@ class Choice(models.Model):
     @property
     def votes(self):
         """
-        Returns the number of votes for this choice.
-
-        Returns:
-            int: The number of votes.
+        Return the votes for this choice.
         """
         return self.vote_set.count()
 
@@ -89,10 +80,10 @@ class Choice(models.Model):
 
 class Vote(models.Model):
     """
-    A vote by a user for a choice in a poll.
+    Represent a vote by a user for a choice in a poll.
 
     Attributes:
-        choice (Choice): The choice being voted for.
+        choice (Choice): The choice that was voted for.
         user (User): The user who cast the vote.
     """
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
