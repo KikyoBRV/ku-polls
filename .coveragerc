@@ -1,0 +1,27 @@
+[run]
+# Measure branch coverage
+branch = True
+
+# Don't measure Python standard library (default behavior)
+cover_pylib = False
+
+# Explicitly include the main app
+include =
+    polls/*.py
+
+# Omit uninteresting stuff
+omit =
+    __init__.py
+    /usr/*
+    mysite/*
+    polls/migrations/*
+    tests/*.py
+    env/*
+    polls/admin.py
+    polls/apps.py
+
+[report]
+# Exclude some methods from the report
+exclude_lines =
+    def __str__
+    def __repr__
