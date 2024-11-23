@@ -1,0 +1,7 @@
+.git
+.venv
+venv
+.github
+settings.ini
+db.sqlite3
+__pycache__
